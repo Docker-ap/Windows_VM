@@ -1,27 +1,51 @@
 FROM ubuntu:16.04
 
-USER panchatcharama
+RUN groupadd -g 1000 panchatcharama
+
+RUN useradd -u 1000 -g 1000 -ms /bin/bash panchatcharama \
+        && echo "panchatcharama:panchatcharama" | chpasswd \
+        && adduser panchatcharama sudo
+
+USER panchatcharama:panchatcharama
 
 ENV USER panchatcharama
 
-WORKDIR /home/panchatcharama
+ENV HOME /home/panchatcharama 
+
+WORKDIR ${HOME}
+
+#[user]
+#    email = arumugam.panchatcharam@technicolor.com
+#    name = Arumugam Panchatcharam
+#[color]
+#    ui = auto
+#[gitreview]
+#    username = panchatcharama
+#[review "https://gerrit.teamccp.com"]
+#    username = panchatcharama
+#[http]
+#    sslVerify = false
+#    postBuffer = 157286400
+#[alias]
+#    sshow = "!f() { git stash show stash^{/$*} -p; }; f"
+#    sapply = "!f() { git stash apply stash^{/$*}; }; f" 
 
 # Configure default git user
-RUN echo "panchatcharama" >> /home/panchatcharama/.gitconfig \
-        && echo "email = arumugam.panchatcharam@technicolor.com" >> /home/panchatcharama/.gitconfig \
-        && echo "name = Arumugam Panchatcharam" >> /home/panchatcharama/.gitconfig
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-8-jdk
-
-# Create a non-root user 
-RUN id panchatcharama 2>/dev/null || useradd --uid 1000 --create-home panchatcharama
-
-RUN echo "panchatcharama ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
-
-# Disable Host Key verification.
-RUN mkdir -p /home/panchatcharama/.ssh
-
-RUN chown -R panchatcharama:panchatcharama /home/panchatcharama/.ssh
+RUN echo "[user]" >> ${HOME}/.gitconfig \
+        && echo "       email = arumugam.panchatcharam@technicolor.com" >> ${HOME}/.gitconfig \
+        && echo "       name = Arumugam Panchatcharam" >> ${HOME}/.gitconfig \
+        && echo "[color]" >> ${HOME}/.gitconfig \
+        && echo "       ui = auto" >> ${HOME}/.gitconfig \
+        && echo "[gitreview]" >> ${HOME}/.gitconfig \
+        && echo "       username = panchatcharama" >> ${HOME}/.gitconfig \
+        && echo "[review \"https://gerrit.teamccp.com\"]" >> ${HOME}/.gitconfig \
+        && echo "       username = panchatcharama" >> ${HOME}/.gitconfig \
+        && echo "[http]" >> ${HOME}/.gitconfig \
+        && echo "       sslVerify = false" >> ${HOME}/.gitconfig \
+        && echo "       postBuffer = 157286400" >> ${HOME}/.gitconfig \
+        && echo "[alias]" >> ${HOME}/.gitconfig \
+        && echo "       sshow = \"!f() { git stash show stash^{/$*} -p; }; f\"" >> ${HOME}/.gitconfig \
+        && echo "       sapply = \"!f() { git stash apply stash^{/$*}; }; f\"" >> ${HOME}/.gitconfig 
 
 RUN sudo apt-get update && && apt-get install -y \
         autoconf \
