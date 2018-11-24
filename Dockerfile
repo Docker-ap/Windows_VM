@@ -175,7 +175,6 @@ RUN apt-get update && apt-get install -y \
         strace \
         sudo \
         squashfs-tools \
-        textinfo \
         time \
         tree \
         ubuntu-restricted-addons \
@@ -185,7 +184,6 @@ RUN apt-get update && apt-get install -y \
         vim \
         virtualenv \
         wget \
-        wine \
         wine64-development-tools \
         winetricks \
         xmldiff \
@@ -194,15 +192,7 @@ RUN apt-get update && apt-get install -y \
         zbar-tools \
         zip \
         zlib1g \
-        zlib1g-dev \
-        pyyaml \
-        autopep8 \
-        cffi \
-        coverage \
-        dnspython \
-        fabric \
-        json-spec \
-        lxml 
+        zlib1g-dev 
 
 USER panchatcharama
 
