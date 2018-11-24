@@ -47,7 +47,7 @@ RUN echo "[user]" >> ${HOME}/.gitconfig \
         && echo "       sshow = \"!f() { git stash show stash^{/$*} -p; }; f\"" >> ${HOME}/.gitconfig \
         && echo "       sapply = \"!f() { git stash apply stash^{/$*}; }; f\"" >> ${HOME}/.gitconfig 
 
-RUN sudo apt-get update && && apt-get install -y \
+RUN sudo apt-get update && apt-get install -y \
         autoconf \
         automake \
         autotools-dev \
