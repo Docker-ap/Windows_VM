@@ -12,8 +12,6 @@ ENV USER panchatcharama
 
 ENV HOME /home/panchatcharama 
 
-WORKDIR ${HOME}
-
 #[user]
 #    email = arumugam.panchatcharam@technicolor.com
 #    name = Arumugam Panchatcharam
@@ -47,7 +45,10 @@ RUN echo "[user]" >> ${HOME}/.gitconfig \
         && echo "       sshow = \"!f() { git stash show stash^{/$*} -p; }; f\"" >> ${HOME}/.gitconfig \
         && echo "       sapply = \"!f() { git stash apply stash^{/$*}; }; f\"" >> ${HOME}/.gitconfig 
 
-RUN sudo apt-get update && apt-get install -y \
+# Just to install the following packages
+USER root
+
+RUN apt-get update && apt-get install -y \
         autoconf \
         automake \
         autotools-dev \
@@ -202,5 +203,9 @@ RUN sudo apt-get update && apt-get install -y \
         fabric \
         json-spec \
         lxml 
+
+USER panchatcharama
+
+WORKDIR ${HOME}
 
 CMD "/bin/bash"
