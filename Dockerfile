@@ -1,5 +1,7 @@
 FROM ubuntu:16.04
 
+RUN DEBIAN_FRONTEND=noninteractive
+
 RUN groupadd -g 1000 panchatcharama
 
 RUN useradd -u 1000 -g 1000 -ms /bin/bash panchatcharama \
