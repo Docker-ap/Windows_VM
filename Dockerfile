@@ -1,6 +1,8 @@
 FROM ubuntu:16.04
 
-RUN DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND noninteractive
+
+ENV TERM linux
 
 RUN groupadd -g 1000 panchatcharama
 
@@ -49,6 +51,8 @@ RUN echo "[user]" >> ${HOME}/.gitconfig \
 
 # Just to install the following packages
 USER root
+
+RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
 
 RUN apt-get update && apt-get install -y \
         autoconf \
@@ -186,8 +190,6 @@ RUN apt-get update && apt-get install -y \
         vim \
         virtualenv \
         wget \
-        wine64-development-tools \
-        winetricks \
         xmldiff \
         xmlindent \
         xmlsec1 \
