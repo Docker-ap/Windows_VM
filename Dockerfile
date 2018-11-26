@@ -4,54 +4,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV TERM linux
 
-RUN groupadd -g 1000 panchatcharama
-
-RUN useradd -u 1000 -g 1000 -ms /bin/bash panchatcharama \
-        && echo "panchatcharama:panchatcharama" | chpasswd \
-        && adduser panchatcharama sudo
-
-USER panchatcharama:panchatcharama
-
-ENV USER panchatcharama
-
-ENV HOME /home/panchatcharama 
-
-#[user]
-#    email = arumugam.panchatcharam@technicolor.com
-#    name = Arumugam Panchatcharam
-#[color]
-#    ui = auto
-#[gitreview]
-#    username = panchatcharama
-#[review "https://gerrit.teamccp.com"]
-#    username = panchatcharama
-#[http]
-#    sslVerify = false
-#    postBuffer = 157286400
-#[alias]
-#    sshow = "!f() { git stash show stash^{/$*} -p; }; f"
-#    sapply = "!f() { git stash apply stash^{/$*}; }; f" 
-
-# Configure default git user
-RUN echo "[user]" >> ${HOME}/.gitconfig \
-        && echo "       email = arumugam.panchatcharam@technicolor.com" >> ${HOME}/.gitconfig \
-        && echo "       name = Arumugam Panchatcharam" >> ${HOME}/.gitconfig \
-        && echo "[color]" >> ${HOME}/.gitconfig \
-        && echo "       ui = auto" >> ${HOME}/.gitconfig \
-        && echo "[gitreview]" >> ${HOME}/.gitconfig \
-        && echo "       username = panchatcharama" >> ${HOME}/.gitconfig \
-        && echo "[review \"https://gerrit.teamccp.com\"]" >> ${HOME}/.gitconfig \
-        && echo "       username = panchatcharama" >> ${HOME}/.gitconfig \
-        && echo "[http]" >> ${HOME}/.gitconfig \
-        && echo "       sslVerify = false" >> ${HOME}/.gitconfig \
-        && echo "       postBuffer = 157286400" >> ${HOME}/.gitconfig \
-        && echo "[alias]" >> ${HOME}/.gitconfig \
-        && echo "       sshow = \"!f() { git stash show stash^{/$*} -p; }; f\"" >> ${HOME}/.gitconfig \
-        && echo "       sapply = \"!f() { git stash apply stash^{/$*}; }; f\"" >> ${HOME}/.gitconfig 
-
-# Just to install the following packages
-USER root
-
 RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
 
 RUN apt-get update && apt-get install -y \
@@ -144,6 +96,7 @@ RUN apt-get update && apt-get install -y \
         mtools \
         mime-support \
         nano \
+        net-tools \
         nodejs \
         openjdk-8-jdk \
         openssh-client \
@@ -198,8 +151,9 @@ RUN apt-get update && apt-get install -y \
         zlib1g \
         zlib1g-dev 
 
-USER panchatcharama
+# Expose 22 - SSH port
+#        69 - TFTP port
+#        80 - HTTP port
+EXPOSE 22 69 80 
 
-WORKDIR ${HOME}
-
-CMD "/bin/bash"
+CMD ["/bin/bash"]
